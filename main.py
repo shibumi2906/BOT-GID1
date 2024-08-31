@@ -1,35 +1,39 @@
 import telebot
 from telebot import types
 import config
+from bd import init_db
 
-# Создаем экземпляр бота
+# Создаём экземпляр бота
 bot = telebot.TeleBot(config.TELEGRAM_TOKEN)
+
+# Инициализация базы данных
+init_db()
 
 # Обработчик команды /start
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    welcome_text = "Привет! Я ваш бот-гид по местным событиям. Используйте текстовые команды для управления мной.\n"
-    welcome_text += "Доступные команды:\n"
-    welcome_text += "/events - Посмотреть предстоящие события\n"
-    welcome_text += "/help - Получить помощь\n"
+    welcome_text = ("Привет! Я ваш бот-гид по местным событиям. Используйте текстовые команды для управления мной.\n"
+                    "Доступные команды:\n"
+                    "/events - Посмотреть предстоящие события\n"
+                    "/help - Получить помощь\n")
     bot.send_message(message.chat.id, welcome_text)
 
 # Обработчик команды /help
 @bot.message_handler(commands=['help'])
 def send_help(message):
-    help_text = "Список команд:\n"
-    help_text += "/start - начать работу с ботом\n"
-    help_text += "/events - посмотреть предстоящие события\n"
-    help_text += "/help - получить справку по командам\n"
+    help_text = ("Список команд:\n"
+                 "/start - начать работу с ботом\n"
+                 "/events - посмотреть предстоящие события\n"
+                 "/help - получить справку по командам\n")
     bot.send_message(message.chat.id, help_text)
 
 # Обработчик команды /events
 @bot.message_handler(commands=['events'])
 def show_events(message):
-    # Здесь должен быть код, получающий и отправляющий информацию о событиях
-    events_text = "Список событий: (пример данных)\n"
-    events_text += "1. Музыкальный фестиваль - 12.05.2023\n"
-    events_text += "2. Выставка искусств - 15.05.2023\n"
+    # Предполагается, что будет реализация вывода событий
+    events_text = ("Список событий: (пример данных)\n"
+                   "1. Музыкальный фестиваль - 12.05.2023\n"
+                   "2. Выставка искусств - 15.05.2023\n")
     bot.send_message(message.chat.id, events_text)
 
 # Обработчик для текстовых сообщений
@@ -40,3 +44,4 @@ def echo_all(message):
 # Запуск бота
 if __name__ == '__main__':
     bot.infinity_polling()
+
